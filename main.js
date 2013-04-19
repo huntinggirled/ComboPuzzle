@@ -62,8 +62,10 @@ window.onload = function() {
 		var startX=-1, startY=-1, endX=-1, endY=-1;
 		var thisFrame = undefined;
 		var movePanel = undefined;
-		var seBingo = Sound.load('bingo.wav');
-		var seCombo = Sound.load('combo.wav');
+	//	var seBingo = Sound.load('bingo.wav');
+		var seBingo = game.assets['bingo.wav'].clone();
+	//	var seCombo = Sound.load('combo.wav');
+		var seCombo = game.assets['combo.wav'].clone();
 		panel = new Array(width);
 		for(var w=0; w<width; w++) panel[w] = new Array(height);
 		for(var h=0; h<height; h++) {
