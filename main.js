@@ -123,7 +123,6 @@ window.onload = function() {
 		//	console.log('touchmove');
 			if(startX==-1 || startY==-1) return;
 			if(movePanel==undefined) return;
-		//	if(e.x<=0 || gameWidth<=e.x || e.y<=0 || (gameHeight-scoreLabelHeight*3)<=e.y) return;
 			if(e.x<=0+4 || gameWidth-4<=e.x || e.y<=0+4 || (gameHeight-scoreLabelHeight*3)-4<=e.y) {
 				var trimX = e.x;
 				if(e.x<=0) trimX = 0;
@@ -158,6 +157,20 @@ window.onload = function() {
 			panel[startX][startY].opacity = 1.0;
 			panel[endX][endY].frame = startFrame;
 			panel[endX][endY].opacity = 0.0;
+			if(endX<startX-1 || startX+1<endX || endY<startY-gameWidth-2 || startY+gameWidth+2<endY) {
+				var startFrame = panel[startX][startY].frame;
+				var endFrame = panel[endX][endY].frame;
+				panel[startX][startY].frame = endFrame;
+				panel[startX][startY].opacity = 1.0;
+				panel[endX][endY].frame = startFrame;
+				panel[endX][endY].opacity = 1.0;
+				game.rootScene.removeChild(movePanel);
+				movePanel = undefined;
+				comboCount = 0;
+				startX = -1;
+				startY = -1;
+				return;
+			}
 			if(startX!=endX || startY!=endY) {
 				restMoveCount--;
 				//clearPanelLabel.text = clearPanelText+game.score+maxComboText+maxComboCount+restMoveText+restMoveCount;
@@ -190,6 +203,20 @@ window.onload = function() {
 			if(e.x<=0+4 || gameWidth-4<=e.x || e.y<=0+4 || (gameHeight-scoreLabelHeight*3)-4<=e.y) return;
 			endX = parseInt(e.x/panelWidth);
 			endY = parseInt(e.y/panelHeight);
+			if(endX<startX-1 || startX+1<endX || endY<startY-gameWidth-2 || startY+gameWidth+2<endY) {
+				var startFrame = panel[startX][startY].frame;
+				var endFrame = panel[endX][endY].frame;
+				panel[startX][startY].frame = startFrame;
+				panel[startX][startY].opacity = 1.0;
+				panel[endX][endY].frame = endFrame;
+				panel[endX][endY].opacity = 1.0;
+				game.rootScene.removeChild(movePanel);
+				movePanel = undefined;
+				comboCount = 0;
+				startX = -1;
+				startY = -1;
+				return;
+			}
 			var startFrame = panel[startX][startY].frame;
 			var endFrame = panel[endX][endY].frame;
 			panel[startX][startY].frame = endFrame;
