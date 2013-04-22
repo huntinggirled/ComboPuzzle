@@ -87,6 +87,11 @@ window.onload = function() {
 		//	this.scaleX += 0.2;
 			this.scaleY += 0.1;
 			this.opacity -= 0.1;
+			if(this.opacity<=0.0) {
+				this.opacity = 0.0;
+			//	console.log('this.opacity '+this.opacity);
+				return;
+			}
 		});
 		comboLabel.opacity = 0.0;
 		game.rootScene.addChild(comboLabel);
