@@ -462,7 +462,8 @@ function clearBingo() {
 
 function copyArray(arr){
 	var newarr = [];
-	for(var i = 0;i<arr.length;i++){
+	var length = arr.length;
+	for(var i=0; i<length; i++){
 		newarr[i] = copyArray(arr[i]);
 	}
 	return newarr;
