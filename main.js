@@ -10,6 +10,7 @@ var fallSpeed = 16;
 var panelKindStart = Math.floor(Math.random()*6);
 var panelKindCount = 5;
 var isAllPanelTouchEnabled = true;
+var outMargin = 4;
 
 var Panel = enchant.Class.create(enchant.Sprite, {
 	initialize: function(w, h) {
@@ -123,7 +124,7 @@ window.onload = function() {
 		//	console.log('touchmove');
 			if(startX==-1 || startY==-1) return;
 			if(movePanel==undefined) return;
-			if(e.x<=0+4 || gameWidth-4<=e.x || e.y<=0+4 || (gameHeight-scoreLabelHeight*3)-4<=e.y) {
+			if(e.x<=0+outMargin || gameWidth-outMargin<=e.x || e.y<=0+outMargin || (gameHeight-scoreLabelHeight*3)-outMargin<=e.y) {
 				var trimX = e.x;
 				if(e.x<=0) trimX = 0;
 				else if(gameWidth<=e.x) trimX = gameWidth-1;
@@ -157,7 +158,7 @@ window.onload = function() {
 			panel[startX][startY].opacity = 1.0;
 			panel[endX][endY].frame = startFrame;
 			panel[endX][endY].opacity = 0.0;
-			if(endX<startX-1 || startX+1<endX || endY<startY-gameWidth-2 || startY+gameWidth+2<endY) {
+			if(endX<startX-1 || startX+1<endX || endY<startY-1 || startY+1<endY) {
 				var startFrame = panel[startX][startY].frame;
 				var endFrame = panel[endX][endY].frame;
 				panel[startX][startY].frame = endFrame;
@@ -200,10 +201,33 @@ window.onload = function() {
 			if(startX==-1 || startY==-1) return;
 			if(movePanel==undefined) return;
 		//	if(e.x<=0 || gameWidth<=e.x || e.y<=0 || (gameHeight-scoreLabelHeight)<=e.y) return;
-			if(e.x<=0+4 || gameWidth-4<=e.x || e.y<=0+4 || (gameHeight-scoreLabelHeight*3)-4<=e.y) return;
+			if(e.x<=0+outMargin || gameWidth-outMargin<=e.x || e.y<=0+outMargin || (gameHeight-scoreLabelHeight*3)-outMargin<=e.y) {
+				var trimX = e.x;
+				if(e.x<=0) trimX = 0;
+				else if(gameWidth<=e.x) trimX = gameWidth-1;
+				var trimY = e.y;
+				if(e.y<=0) trimY = 0;
+				else if((gameHeight-scoreLabelHeight*3)<=e.y) trimY = (gameHeight-scoreLabelHeight*3)-1;
+				startX = parseInt(trimX/panelWidth);
+				startY = parseInt(trimY/panelHeight);
+				endX = parseInt(trimX/panelWidth);
+				endY = parseInt(trimY/panelHeight);
+				var startFrame = panel[startX][startY].frame;
+				var endFrame = panel[endX][endY].frame;
+				panel[startX][startY].frame = endFrame;
+				panel[startX][startY].opacity = 1.0;
+				panel[endX][endY].frame = startFrame;
+				panel[endX][endY].opacity = 1.0;
+				game.rootScene.removeChild(movePanel);
+				movePanel = undefined;
+				comboCount = 0;
+				startX = -1;
+				startY = -1;
+				return;
+			}
 			endX = parseInt(e.x/panelWidth);
 			endY = parseInt(e.y/panelHeight);
-			if(endX<startX-1 || startX+1<endX || endY<startY-gameWidth-2 || startY+gameWidth+2<endY) {
+			if(endX<startX-1 || startX+1<endX || endY<startY-1 || startY+1<endY) {
 				var startFrame = panel[startX][startY].frame;
 				var endFrame = panel[endX][endY].frame;
 				panel[startX][startY].frame = startFrame;
@@ -231,6 +255,7 @@ window.onload = function() {
 		});
 		game.rootScene.addEventListener(Event.ENTER_FRAME, function(e) {
 			if(movePanel!=undefined) return;
+			allPanelFlush();
 			if(frameStatus==0) {
 				var thisComboCount = checkBingo();
 				if(thisComboCount>0) {
@@ -298,6 +323,14 @@ function allPanelTouchEnabled(flg) {
 	for(var i=0; i<width; i++) {
 		for(var j=0; j<height; j++) {
 			panel[i][j].touchEnabled = isAllPanelTouchEnabled;
+		}
+	}
+}
+
+function allPanelFlush() {
+	for(var i=0; i<width; i++) {
+		for(var j=0; j<height; j++) {
+			if(panel[i][j].opacity==0.0) panel[i][j].opacity = 1.0;
 		}
 	}
 }
