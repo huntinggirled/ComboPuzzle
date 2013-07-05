@@ -63,9 +63,7 @@ window.onload = function() {
 		var startX=-1, startY=-1, endX=-1, endY=-1;
 		var thisFrame = undefined;
 		var movePanel = undefined;
-	//	var seBingo = Sound.load('bingo.wav');
 		var seBingo = game.assets['bingo.wav'].clone();
-	//	var seCombo = Sound.load('combo.wav');
 		var seCombo = game.assets['combo.wav'].clone();
 		panel = new Array(width);
 		for(var w=0; w<width; w++) panel[w] = new Array(height);
@@ -84,16 +82,6 @@ window.onload = function() {
 		var restMoveLabel = new MutableText(5, gameHeight-scoreLabelHeight*1, gameWidth, restMoveText+restMoveCount);
 		game.rootScene.addChild(restMoveLabel);
 		var comboLabel = new MutableText(0, 0, gameWidth, '');
-		comboLabel.addEventListener(Event.ENTER_FRAME, function() {
-		//	this.scaleX += 0.2;
-			this.scaleY += 0.1;
-			this.opacity -= 0.1;
-			if(this.opacity<=0.0) {
-				this.opacity = 0.0;
-			//	console.log('this.opacity '+this.opacity);
-				return;
-			}
-		});
 		comboLabel.opacity = 0.0;
 		game.rootScene.addChild(comboLabel);
 		while(checkBingo()!=0) {
@@ -276,7 +264,6 @@ window.onload = function() {
 									panel[i][j].frame = -1;
 									panel[i][j].opacity = 1.0;
 									if(sceneCount==count) {
-									//	game.score += count;
 										clearPanelCount += count;
 									//	console.log('comboCount='+comboCount);
 										clearPanelLabel.text = clearPanelText+clearPanelCount;
@@ -288,10 +275,11 @@ window.onload = function() {
 											maxComboLabel.text = maxComboText+maxComboCount;
 											comboLabel.x = (panel[i][j].x+16<gameWidth-128)?(panel[i][j].x+16):(gameWidth-128);
 											comboLabel.y = (panel[i][j].y+16<gameHeight-32)?(panel[i][j].y+16):(gameHeight-32);
-										//	comboLabel.scaleX = 1.0;
+											comboLabel.scaleX = 1.0;
 											comboLabel.scaleY = 1.0;
 											comboLabel.opacity = 1.0;
 											comboLabel.text = maxComboCount+'combo!';
+											comboLabel.tl.fadeTo(0,30).and().scaleTo(1.2,3,30);
 										}
 										trimPanel();
 										thisFrame = undefined;
