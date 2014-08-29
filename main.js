@@ -58,13 +58,14 @@ window.onload = function() {
 	height = Math.floor((gameHeight-scoreLabelHeight)/panelHeight);
 	game.fps = 15;
 	game.score = 0;
-	game.preload('panel.png', 'bingo.wav', 'combo.wav');
+//	game.preload('panel.png', 'bingo.wav', 'combo.wav');
+	game.preload('panel.png');
 	game.onload = function() {
 		var startX=-1, startY=-1, endX=-1, endY=-1;
 		var thisFrame = undefined;
 		var movePanel = undefined;
-		var seBingo = game.assets['bingo.wav'].clone();
-		var seCombo = game.assets['combo.wav'].clone();
+	//	var seBingo = game.assets['bingo.wav'].clone();
+	//	var seCombo = game.assets['combo.wav'].clone();
 		panel = new Array(width);
 		for(var w=0; w<width; w++) panel[w] = new Array(height);
 		for(var h=0; h<height; h++) {
@@ -74,10 +75,10 @@ window.onload = function() {
 		}
 		var maxComboText = 'MAX COMBO: ';
 		var maxComboLabel = new MutableText(5, gameHeight-scoreLabelHeight*3, gameWidth, maxComboText+'0');
-        game.rootScene.addChild(maxComboLabel);
+		game.rootScene.addChild(maxComboLabel);
 		var clearPanelText = 'CLEAR PANEL: ';
 		var clearPanelLabel = new MutableText(5, gameHeight-scoreLabelHeight*2, gameWidth, clearPanelText+'0');
-        game.rootScene.addChild(clearPanelLabel);
+		game.rootScene.addChild(clearPanelLabel);
 		var restMoveText = 'REST MOVE: ';
 		var restMoveLabel = new MutableText(5, gameHeight-scoreLabelHeight*1, gameWidth, restMoveText+restMoveCount);
 		game.rootScene.addChild(restMoveLabel);
@@ -252,8 +253,8 @@ window.onload = function() {
 					if(thisFrame==undefined || thisFrame==0) {
 						thisFrame = game.frame;
 					//	console.log('thisFrame:'+thisFrame+' count='+count+' thisComboCount='+thisComboCount);
-						seBingo.stop();
-			            seBingo.play();
+					//	seBingo.stop();
+					//	seBingo.play();
 					}
 					if((game.frame-thisFrame)/game.fps>=1) {
 						var sceneCount = 0;
@@ -269,8 +270,8 @@ window.onload = function() {
 										clearPanelLabel.text = clearPanelText+clearPanelCount;
 										comboCount += thisComboCount;
 										if(maxComboCount<comboCount) {
-											seCombo.stop();
-											seCombo.play();
+										//	seCombo.stop();
+										//	seCombo.play();
 											maxComboCount = comboCount;
 											maxComboLabel.text = maxComboText+maxComboCount;
 											comboLabel.x = (panel[i][j].x+16<gameWidth-128)?(panel[i][j].x+16):(gameWidth-128);
@@ -302,7 +303,7 @@ window.onload = function() {
 			}
 		});
 	}
-    game.start();
+	game.start();
 };
 
 function allPanelTouchEnabled(flg) {
